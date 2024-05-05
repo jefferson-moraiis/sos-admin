@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 import { Context } from '../contexts/AuthContext';
 
 export function PublicRouter({ children }: { children: JSX.Element }) {
-    console.log("🚀 ~ PrivateRouter ~ children:", children)
     const context = useContext(Context);
     
     if (!context) {
