@@ -57,6 +57,9 @@ export type User = {
   id: string
   name: string
   email: string
+  location:{
+    address: string,
+  }
 }
 
 export const columns: ColumnDef<User>[] = [

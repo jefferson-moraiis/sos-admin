@@ -38,26 +38,28 @@ import { UserMap } from "@/components/UserMap";
 export function DashboardPage() {
   const auth = getAuth()
   const [users, setUsers] = useState([]);
+  const socket = useSocket();
 
   useEffect(() => {
-    const socket = useSocket();
-    socket.on('getLocation', newUser => {
+    const onGetLocation = (newUser) => {
       setUsers(currentUsers => {
         const index = currentUsers.findIndex(user => user.id === newUser.id);
         if (index >= 0) {
-          // Usuário já existe, atualizar
           const updatedUsers = [...currentUsers];
           updatedUsers[index] = newUser;
           return updatedUsers;
         } else {
-          // Novo usuário, adicionar à lista
           return [...currentUsers, newUser];
         }
       });
-    });
+    };
+    socket.on('getLocation', onGetLocation);
+    return () => {
+      socket.off('getLocation', onGetLocation);
+      socket.disconnect();
+    };
+  }, [socket]); 
 
-    return () => socket.disconnect();
-  }, []);
   async function handleSignOut(){
       try {
           await signOut(auth);
@@ -120,7 +122,7 @@ export function DashboardPage() {
                     <TableCell>{user.location.andress}</TableCell>
                     </TableRow>
                     <TableRow >
-                        <UserMap user={user} />
+                        <UserMap users={user} />
 
                     </TableRow>
                     </>

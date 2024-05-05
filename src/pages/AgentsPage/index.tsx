@@ -49,7 +49,6 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import api from "@/utils/api";
-import { Checkbox } from "@/components/ui/checkbox"
 import { RedirectButton } from "@/components/RedirectButton";
 
 
@@ -57,6 +56,9 @@ export type User = {
   id: string
   name: string
   email: string
+  location:{
+    address: string
+  }
 }
 
 export const columns: ColumnDef<User>[] = [
